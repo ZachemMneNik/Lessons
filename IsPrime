@@ -1,0 +1,36 @@
+int IsPrime(int x1)
+{
+    int i;
+
+    i = 2;
+
+    while(x1 > i)
+    {
+        if(x1%i == 0)
+        {
+            return 1;
+        }
+        i++;
+    }
+    return 0;
+}
+
+int main()
+{
+
+    int x1, n, rez;
+
+    n = scanf("%d", &x1);
+
+    if(n != 1)
+    {
+       printf("Error: wrong input\n");
+       return 1;
+    }
+
+    rez = IsPrime(x1);
+
+    printf("%d\n", rez);
+
+    return 0;
+}
