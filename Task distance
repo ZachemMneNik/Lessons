@@ -1,0 +1,26 @@
+double distance(double x1, double y1, double x2, double y2)
+{
+    return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+}
+
+int main()
+{
+    /*Roots();Вычислить корни квадратного уравнения*/
+
+    double x1, x2, y1, y2, dist;
+    int point1, point2;
+
+    point1 = scanf("%lf %lf", &x1, &y1);
+    point2 = scanf("%lf %lf", &x2, &y2);
+
+    if((point1 != 2) || (point2 != 2)) {
+       printf("Error: wrong input\n");
+       return 1;
+    }
+
+    dist = distance(x1, y1, x2, y2);
+
+    printf("%.5f\n", dist);
+
+    return 0;
+}
