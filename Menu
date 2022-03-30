@@ -1,0 +1,237 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+typedef struct Node
+    {
+        char ElementName[100];
+        struct Node* next;
+    } Node;
+
+int main(int argc, char* argv[])
+{
+    setlocale(LC_ALL, "Rus");
+
+    int res;
+    Node *ZeroElement = (Node*)malloc(sizeof(Node));
+
+    res = 0;
+    ZeroElement->next = NULL;
+
+    printf("1) Создать первый элемент односвязного списка\n");
+    printf("2) Добавить элемент в конец односвязного списка\n");
+    printf("3) Удалить элемент с конца односвязного списка\n");
+    printf("4) Просмотреть односвязный список\n");
+    printf("5) Удалить весь односвязный список\n");
+    printf("6) Выполнить последовательный поиск заданного элемента в односвязном списке\n");
+    printf("7) Выйти из программы\n");
+
+    while(res != 7)
+    {
+        printf("Введите номер действия из списка:\n");
+        scanf("%d", &res);
+
+        if(res == 1)
+            {
+                CreateFirstNewElement(ZeroElement);
+                rewind(stdin);
+            }
+        else if(res == 2)
+            {
+                CreateNewElementInTheEnd(ZeroElement);
+            }
+        else if(res == 3)
+            {
+                DeleteElementInTheEnd(ZeroElement);
+            }
+        else if(res == 4)
+            {
+                ShowNode(ZeroElement);
+            }
+        else if(res == 5)
+            {
+                DeleteNode(ZeroElement);
+            }
+        else if(res == 6)
+            {
+                FindElement(ZeroElement);
+            }
+        else if(res == 7)
+            {}
+        else
+        {
+            rewind(stdin);
+            printf("Ошибка ввода\n");
+        }
+
+    }
+
+    return 0;
+}
+
+void CreateFirstNewElement(Node *ZeroElement)
+{
+    setlocale(LC_ALL, "Rus");
+
+    char res[1];
+
+    if(ZeroElement->next != NULL)
+    {
+        printf("Первый элемент уже существует. Продолжить создание и нового элемента и установки на 1-ое место? [Y/N]\n");
+        scanf("%s", &res);
+
+        if (strcmp(res, "Y") != 0 && strcmp(res, "y") != 0)
+        {
+            return;
+        }
+    }
+
+    Node *NextElement = (Node*)malloc(sizeof(Node));
+
+    printf("Введите имя элемента:\n");
+    scanf("%s", NextElement->ElementName);
+    if(ZeroElement->next != NULL)
+    {
+        NextElement->next = ZeroElement->next;
+    }
+    else
+    {
+        NextElement->next = NULL;
+    }
+    ZeroElement->next = NextElement;
+}
+
+void CreateNewElementInTheEnd(Node *ZeroElement)
+{
+    setlocale(LC_ALL, "Rus");
+
+    Node *NewLastElement = (Node*)malloc(sizeof(Node));
+
+    NewLastElement->next = NULL;
+
+    printf("Введите имя элемента:\n");
+    scanf("%s", NewLastElement->ElementName);
+
+    while(ZeroElement->next != NULL)
+    {
+        ZeroElement = ZeroElement->next;
+    }
+
+    ZeroElement->next = NewLastElement;
+}
+
+void DeleteElementInTheEnd(Node *ZeroElement)
+{
+    setlocale(LC_ALL, "Rus");
+
+    if(ZeroElement->next == NULL)
+    {
+        printf("Список пуст, удаление последнего элемента невозможно\n");
+        return;
+    }
+
+    Node *DeletingElement = (Node*)malloc(sizeof(Node));
+
+    while(ZeroElement->next != NULL)
+    {
+        DeletingElement = ZeroElement;
+        ZeroElement = ZeroElement->next;
+    }
+
+    DeletingElement->next = NULL;
+    free(ZeroElement);
+
+}
+
+void ShowNode(Node *ZeroElement)
+{
+    setlocale(LC_ALL, "Rus");
+    int counter;
+
+    counter = 0;
+
+    if(ZeroElement->next == NULL)
+    {
+        printf("Список пуст\n");
+        return;
+    }
+
+    while(ZeroElement->next != NULL)
+    {
+        counter++;
+
+        if(counter > 1)
+        {
+            printf("%s -> ", ZeroElement->ElementName);
+        }
+
+        ZeroElement = ZeroElement->next;
+    }
+
+    if(counter > 1)
+    {
+        printf("%s\n", ZeroElement->ElementName);
+    }
+    else
+    {
+        printf("%s\n", ZeroElement->ElementName);
+    }
+}
+
+void DeleteNode(Node *ZeroElement)
+{
+    setlocale(LC_ALL, "Rus");
+
+    if(ZeroElement->next == NULL)
+    {
+        printf("Список пуст, удаление списка невозможно\n");
+        return;
+    }
+
+    Node *DeletingElement = (Node*)malloc(sizeof(Node));
+
+    while(ZeroElement->next != NULL)
+    {
+        DeletingElement = ZeroElement->next;
+        ZeroElement->next = ZeroElement->next->next;
+        free(DeletingElement);
+    }
+
+    printf("Список очищен!\n");
+
+}
+
+void FindElement(Node *ZeroElement)
+{
+    setlocale(LC_ALL, "Rus");
+
+    if(ZeroElement->next == NULL)
+    {
+        printf("Список пуст!\n");
+        return;
+    }
+
+    ZeroElement = ZeroElement->next;
+
+    int counter;
+    char FindingElement[100];
+
+    counter = 0;
+    printf("Введите элемент для поиска:\n");
+    scanf("%s", &FindingElement);
+
+    while(ZeroElement != NULL)
+    {
+        counter++;
+
+        if (strcmp(ZeroElement->ElementName, FindingElement) == 0)
+        {
+            printf("Элемент найден!\nПозиция элемента в списке: %d\n", counter);
+            return;
+        }
+
+        ZeroElement = ZeroElement->next;
+    }
+
+    printf("Элемент найти не удалось!\n");
+}
