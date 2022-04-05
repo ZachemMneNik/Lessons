@@ -35,26 +35,37 @@ int main(int argc, char* argv[])
             {
                 CreateFirstNewElement(ZeroElement);
                 rewind(stdin);
+                res = 0;
             }
         else if(res == 2)
             {
                 CreateNewElementInTheEnd(ZeroElement);
+                rewind(stdin);
+                res = 0;
             }
         else if(res == 3)
             {
                 DeleteElementInTheEnd(ZeroElement);
+                rewind(stdin);
+                res = 0;
             }
         else if(res == 4)
             {
                 ShowNode(ZeroElement);
+                rewind(stdin);
+                res = 0;
             }
         else if(res == 5)
             {
                 DeleteNode(ZeroElement);
+                rewind(stdin);
+                res = 0;
             }
         else if(res == 6)
             {
                 FindElement(ZeroElement);
+                rewind(stdin);
+                res = 0;
             }
         else if(res == 7)
             {}
@@ -78,7 +89,7 @@ void CreateFirstNewElement(Node *ZeroElement)
     if(ZeroElement->next != NULL)
     {
         printf("Первый элемент уже существует. Продолжить создание и нового элемента и установки на 1-ое место? [Y/N]\n");
-        scanf("%s", &res);
+        scanf("%100s", &res);
 
         if (strcmp(res, "Y") != 0 && strcmp(res, "y") != 0)
         {
@@ -89,7 +100,7 @@ void CreateFirstNewElement(Node *ZeroElement)
     Node *NextElement = (Node*)malloc(sizeof(Node));
 
     printf("Введите имя элемента:\n");
-    scanf("%s", NextElement->ElementName);
+    scanf("%100s", NextElement->ElementName);
     if(ZeroElement->next != NULL)
     {
         NextElement->next = ZeroElement->next;
@@ -110,7 +121,7 @@ void CreateNewElementInTheEnd(Node *ZeroElement)
     NewLastElement->next = NULL;
 
     printf("Введите имя элемента:\n");
-    scanf("%s", NewLastElement->ElementName);
+    scanf("%100s", NewLastElement->ElementName);
 
     while(ZeroElement->next != NULL)
     {
@@ -218,7 +229,7 @@ void FindElement(Node *ZeroElement)
 
     counter = 0;
     printf("Введите элемент для поиска:\n");
-    scanf("%s", &FindingElement);
+    scanf("%100s", &FindingElement);
 
     while(ZeroElement != NULL)
     {
