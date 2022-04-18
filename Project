@@ -1,0 +1,132 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+int main(int argc, char* argv[])
+{
+    setlocale(LC_ALL, "Rus");
+
+    FILE *ResultFile;
+    double *a;
+    int i, j, n;
+
+    ResultFile = fopen("ResultFile.txt", "w");
+
+    printf("Введите количество неизвестных (количество уравнений должно совпадать с количеством неизвестных):\n");
+    scanf("%d", &n);
+
+    a = (double*)malloc(n*(n+1) * sizeof(double));
+
+    for (i = 0; i<n; i++)
+    {
+
+        for (j = 0; j<n+1; j++)
+        {
+
+            if(j != n)
+            {
+                printf("Введите коэффициент при x%d в уравнении %d\n", i+1, j+1);
+            }
+            else
+            {
+                    printf("Введите число y%d которому равняется %d уравнение\n", i+1, i+1);
+            }
+
+            scanf("%lf", (a + i*(n+1) + j));
+        }
+    }
+
+    WriteNewMatrixOnFile(a, n, ResultFile);
+
+    ToTriangleView(a, n, ResultFile);
+
+    fclose(ResultFile);
+
+    return 0;
+}
+
+/* Приводит изначальный массив к верхнему треугольному виду */
+void ToTriangleView(double *a, int n, FILE *ResultFile)
+{
+    setlocale(LC_ALL, "Rus");
+
+    int i, j;
+    double q;
+
+    for (i = 0; i<n; i++)
+    {
+
+        if(i != n-1)
+        {
+            fprintf(ResultFile, "Описание шага\n");
+        }
+
+        if(*(a + i*(n+1) + i) == 0 && i != n-1) /* Избавляемся от 0 в i строке и i столбце если это не последняя строка */
+        {
+            for (j = i+1; j<n; j++)
+            {
+
+                if(*(a + j*(n+1) + i) != 0)
+                {
+                    q = 1; /* Нам без разницы какой коэффициент что бы убрать 0 в i-ой строке */
+
+                    SumRows(a, n, j, i, q, ResultFile);
+                }
+            }
+        }
+
+        for (j = i+1; j<n; j++)
+        {
+            q = -(*(a + j*(n+1) + i) / *(a + i*(n+1) + i)); /* Коэффициент что бы обнулить элемент j строки i столбца */
+
+            SumRows(a, n, i, j, q, ResultFile);
+        }
+
+        if(i != n-1)
+        {
+            WriteNewMatrixOnFile(a, n, ResultFile);
+        }
+
+    }
+}
+
+/*Прибавляет к j строке i строку домноженную на коэффициент q в массиве a размера n*(n+1)*/
+void SumRows(double *a, int n, int i, int j, double q, FILE *ResultFile)
+{
+    setlocale(LC_ALL, "Rus");
+
+    fprintf(ResultFile, "Прибавить к уравнению №%d уравнение №%d домноженную на %lf\n", j+1, i+1, q);
+
+    int k;
+
+    for (k = 0; k<n+1; k++)
+    {
+        *(a + j*(n+1) + k) = *(a + j*(n+1) + k) + (*(a + i*(n+1) + k))*q;
+    }
+
+}
+
+void WriteNewMatrixOnFile(double *a, int n, FILE *ResultFile)
+{
+    setlocale(LC_ALL, "Rus");
+
+    int i, j;
+
+    fprintf(ResultFile, "Матрица после преобразования описанная в шаге\n");
+
+    for (i = 0; i<n; i++)
+    {
+
+        fprintf(ResultFile, "|");
+
+        for (j = 0; j<n+1; j++)
+        {
+            fprintf(ResultFile, "  %10lf  |", *(a + i*(n+1) + j));
+        }
+
+        fprintf(ResultFile, "\n");
+
+    }
+
+    fprintf(ResultFile, "\n\n");
+}
