@@ -1,0 +1,163 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+int main()
+{
+    setlocale(LC_ALL, "Rus");
+
+    /*CountSimbolsInRow();*/
+    /*WordInRow();*/
+    /*GistogramLenWordsInInput();*/
+    /*OutputRowsUnder80Simbols();*/
+    ReverseOutput();
+
+    return 0;
+}
+
+void CountSimbolsInRow()
+{
+    setlocale(LC_ALL, "Rus");
+
+    int SimbolCode, i, j, k;
+
+    i = 0;
+    j = 0;
+    k = 0;
+    SimbolCode = 0;
+
+    printf("Введите строку:\n");
+
+    while((SimbolCode = getchar()) != EOF)
+    {
+
+        if(SimbolCode == 32)
+        {
+            i = i+1;
+        }
+        else if(SimbolCode == 9)
+        {
+            j = j + 1;
+        }
+        else if(SimbolCode == 10)
+        {
+            k = k + 1;
+        }
+
+    }
+
+    printf("Количество пробелов в считанной строке: %d\nКоличество табуляций в считанной строке: %d\nКоличество переносов строки в считанной строке: %d\n", i, j, k);
+}
+
+void WordInRow()
+{
+    setlocale(LC_ALL, "Rus");
+
+    int SimbolCode;
+
+    SimbolCode = 0;
+
+    printf("Введите строку:\n");
+
+    while((SimbolCode = getchar()) != EOF)
+    {
+
+        if(SimbolCode == 32)
+        {
+            printf("\n");
+        }
+        else
+        {
+            printf("%c", SimbolCode);
+        }
+
+    }
+}
+
+void GistogrammLenWordsInInput()
+{
+    setlocale(LC_ALL, "Rus");
+
+    int SimbolCode;
+
+    SimbolCode = 0;
+
+    printf("Введите строку:\n");
+
+    while((SimbolCode = getchar()) != EOF)
+    {
+
+        if(SimbolCode == 32)
+        {
+            printf("\n");
+        }
+        else
+        {
+            printf("|");
+        }
+
+    }
+}
+
+void OutputRowsUnder80Simbols()
+{
+    setlocale(LC_ALL, "Rus");
+
+    char TekRow[80];
+    int SimbolCode, RowSize;
+
+    SimbolCode = 0;
+    RowSize = 0;
+
+    /*printf("Введите строку:\n");*/
+
+    while((SimbolCode = getchar()) != EOF)
+    {
+
+        if(SimbolCode == 10)
+        {
+            RowSize = 0;
+        }
+        else if(RowSize < 80)
+        {
+            TekRow[RowSize - 1] = (char)SimbolCode;
+        }
+
+        RowSize = RowSize + 1;
+
+        if(RowSize == 81)
+        {
+            printf("%s", TekRow);
+        }
+        else if(RowSize > 81)
+        {
+            printf("%c", SimbolCode);
+        }
+
+    }
+}
+
+void ReverseOutput()
+{
+    setlocale(LC_ALL, "Rus");
+
+    char *Input;
+    int StrLen, i = 0, SimbolCode;
+
+    while((SimbolCode = getchar()) != EOF)
+    {
+        i = i+1;
+
+        Input = (char*)realloc(Input, i*sizeof(char));
+        Input[i-1] = (char)SimbolCode;
+    }
+
+    StrLen = i;
+    i = 0;
+
+    while(StrLen > i)
+    {
+        printf("%c", Input[StrLen - i-1]);
+        i = i+1;
+    }
+}
