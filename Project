@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 
             if(j != n)
             {
-                printf("Введите коэффициент при x%d в уравнении %d\n", i+1, j+1);
+                printf("Введите коэффициент при x%d в уравнении %d\n", j+1, i+1);
             }
             else
             {
@@ -39,6 +39,8 @@ int main(int argc, char* argv[])
     WriteNewMatrixOnFile(a, n, ResultFile);
 
     ToTriangleView(a, n, ResultFile);
+
+    FindRootsAndWriteOnFile(a, n, ResultFile);
 
     fclose(ResultFile);
 
@@ -129,4 +131,32 @@ void WriteNewMatrixOnFile(double *a, int n, FILE *ResultFile)
     }
 
     fprintf(ResultFile, "\n\n");
+}
+
+void FindRootsAndWriteOnFile(double *a, int n, FILE *ResultFile)
+{
+    setlocale(LC_ALL, "Rus");
+
+    int i, j;
+    double Res[n], ResOnStep, xj, aj, ai;
+
+    fprintf(ResultFile, "Найденные значения неизвестных: \n");
+
+    for (i = n; i>0; i--)
+    {
+        ai = *(a + (i-1)*(n+1) + (i-1));
+        ResOnStep = *(a + (i-1)*(n+1) + n);
+
+        for (j = n; j>i; j--)
+        {
+            aj = *(a + (i-1)*(n+1) + (j-1));
+            xj = *(Res+n-j);
+
+            ResOnStep = ResOnStep - aj*xj;
+        }
+
+        *(Res+n-i) = ResOnStep / ai;
+
+        fprintf(ResultFile, "x%d = %lf\n", i, ResOnStep / ai);
+    }
 }
